@@ -904,6 +904,17 @@ function getDashboardHtml(webview) {
       grid-template-columns: minmax(420px, 1.1fr) minmax(320px, 0.9fr);
       gap: 12px;
     }
+    .usage-grid {
+      align-items: stretch;
+      height: clamp(520px, calc(100vh - 24px), 760px);
+      min-height: 0;
+    }
+    .usage-grid > .panel {
+      display: flex;
+      min-height: 0;
+      overflow: hidden;
+      flex-direction: column;
+    }
     .panel h2 {
       margin: 0;
       padding: 12px;
@@ -1151,6 +1162,7 @@ function getDashboardHtml(webview) {
       align-items: center;
       justify-content: space-between;
       gap: 8px;
+      flex: 0 0 auto;
       padding: 10px;
       border-bottom: 1px solid var(--line);
     }
@@ -1205,6 +1217,12 @@ function getDashboardHtml(webview) {
       color: var(--muted);
       font-size: 11px;
     }
+    #promptTokenList {
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow: auto;
+      scrollbar-gutter: stable;
+    }
     .reported {
       color: #0f513b;
       background: #cdeedd;
@@ -1220,7 +1238,12 @@ function getDashboardHtml(webview) {
     .detail {
       display: grid;
       gap: 10px;
+      align-content: start;
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow: auto;
       padding: 12px;
+      scrollbar-gutter: stable;
     }
     .detail-head {
       display: flex;
@@ -1299,6 +1322,15 @@ function getDashboardHtml(webview) {
     @media (max-width: 880px) {
       .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .grid { grid-template-columns: 1fr; }
+      .usage-grid {
+        height: auto;
+      }
+      .usage-grid > .panel {
+        overflow: hidden;
+      }
+      #promptTokenList {
+        max-height: 430px;
+      }
       .folder-hero-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .folder-main { grid-column: 1 / -1; }
       .install-grid { grid-template-columns: 1fr; }
@@ -1323,13 +1355,13 @@ function getDashboardHtml(webview) {
 
     <section class="folder-hero" id="folderHero"></section>
 
-    <section class="grid">
-      <section class="panel">
+    <section class="grid usage-grid">
+      <section class="panel prompt-panel">
         <h2>Current Folder Prompt Usage</h2>
         <div class="ledger-tools"><input id="search" placeholder="Search current folder prompt or model"><span id="ledgerCount" class="ledger-count"></span></div>
         <div id="promptTokenList"></div>
       </section>
-      <section class="panel">
+      <section class="panel detail-panel">
         <h2>Prompt Detail</h2>
         <div class="detail" id="detail"></div>
       </section>
