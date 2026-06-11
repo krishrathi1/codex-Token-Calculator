@@ -1,0 +1,31 @@
+{
+  "name": "ide-model-token-tracker",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Local desktop tracker for IDE AI model usage, tokens, prompts, and outputs.",
+  "type": "module",
+  "main": "electron/main.js",
+  "scripts": {
+    "dev": "concurrently -k \"npm:dev:ui\" \"npm:dev:electron\"",
+    "dev:ui": "vite --host 127.0.0.1",
+    "dev:electron": "wait-on tcp:5173 && electron .",
+    "build": "vite build",
+    "extension:smoke": "node vscode-extension/test/parser-smoke.cjs",
+    "extension:package": "powershell -ExecutionPolicy Bypass -File ./vscode-extension/scripts/package-vsix.ps1",
+    "preview": "vite preview --host 127.0.0.1",
+    "start": "electron ."
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "^5.1.1",
+    "chokidar": "^4.0.3",
+    "electron": "^39.2.7",
+    "lucide-react": "^0.562.0",
+    "react": "^19.2.1",
+    "react-dom": "^19.2.1"
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.3",
+    "vite": "^7.2.7",
+    "wait-on": "^9.0.3"
+  }
+}

@@ -1,0 +1,181 @@
+{
+  "name": "ide-token-graph-tracker",
+  "displayName": "Codex Token Tracker",
+  "description": "Track Codex prompts, responses, models, and reported token usage from local Codex session logs in near real time.",
+  "version": "0.9.0",
+  "publisher": "local-ai-tools",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Other",
+    "Visualization"
+  ],
+  "keywords": [
+    "codex",
+    "tokens",
+    "prompt",
+    "graph"
+  ],
+  "activationEvents": [
+    "onStartupFinished",
+    "onView:aiTokenTracker.graphView"
+  ],
+  "main": "./extension.cjs",
+  "icon": "media/icon.svg",
+  "contributes": {
+    "commands": [
+      {
+        "command": "aiTokenTracker.openDashboard",
+        "title": "Codex Token Tracker: Open Dashboard"
+      },
+      {
+        "command": "aiTokenTracker.rescan",
+        "title": "Codex Token Tracker: Rescan Logs"
+      },
+      {
+        "command": "aiTokenTracker.addSource",
+        "title": "Codex Token Tracker: Add Log Folder"
+      },
+      {
+        "command": "aiTokenTracker.exportLedger",
+        "title": "Codex Token Tracker: Export Ledger JSON"
+      },
+      {
+        "command": "aiTokenTracker.openStorage",
+        "title": "Codex Token Tracker: Open Local Storage"
+      },
+      {
+        "command": "aiTokenTracker.rescanInstallations",
+        "title": "Codex Token Tracker: Rescan Installations"
+      },
+      {
+        "command": "aiTokenTracker.showCaptureLimits",
+        "title": "Codex Token Tracker: Show Capture Notes"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "aiTokenTracker",
+          "title": "Codex Tokens",
+          "icon": "media/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "aiTokenTracker": [
+        {
+          "id": "aiTokenTracker.graphView",
+          "name": "Current Folder Tokens",
+          "type": "webview"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Codex Token Tracker",
+      "properties": {
+        "aiTokenTracker.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable local Codex token tracking."
+        },
+        "aiTokenTracker.sources": {
+          "type": "array",
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "description": "Additional folders to scan for JSON, JSONL, and text AI logs."
+        },
+        "aiTokenTracker.fullScanIntervalMs": {
+          "type": "number",
+          "default": 60000,
+          "minimum": 10000,
+          "description": "Safety full-scan interval for folders that cannot be watched directly. Real-time capture uses file watchers first."
+        },
+        "aiTokenTracker.realtimeCapture": {
+          "type": "boolean",
+          "default": true,
+          "description": "Watch known Codex session folders and update the graph as soon as JSONL logs change."
+        },
+        "aiTokenTracker.realtimeDebounceMs": {
+          "type": "number",
+          "default": 750,
+          "minimum": 100,
+          "maximum": 5000,
+          "description": "Delay before parsing changed log files. Lower values feel more live; higher values reduce duplicate work while responses stream."
+        },
+        "aiTokenTracker.maxRealtimeBatchFiles": {
+          "type": "number",
+          "default": 50,
+          "minimum": 1,
+          "maximum": 500,
+          "description": "Maximum changed files to parse in one realtime batch."
+        },
+        "aiTokenTracker.savePromptsAndOutputs": {
+          "type": "boolean",
+          "default": true,
+          "description": "Save prompt and output text in the local ledger."
+        },
+        "aiTokenTracker.maxFileSizeMb": {
+          "type": "number",
+          "default": 30,
+          "minimum": 1,
+          "maximum": 200,
+          "description": "Maximum AI log file size to parse."
+        },
+        "aiTokenTracker.maxFilesPerSource": {
+          "type": "number",
+          "default": 1000,
+          "minimum": 100,
+          "maximum": 10000,
+          "description": "Maximum recent log files to inspect during a full scan of each source."
+        },
+        "aiTokenTracker.webviewRecordLimit": {
+          "type": "number",
+          "default": 500,
+          "minimum": 50,
+          "maximum": 5000,
+          "description": "Maximum recent prompt/output records sent to the dashboard webview. Export still includes the full ledger."
+        },
+        "aiTokenTracker.processRefreshIntervalMs": {
+          "type": "number",
+          "default": 10000,
+          "minimum": 3000,
+          "maximum": 60000,
+          "description": "How often to refresh the lightweight Code/Codex process list."
+        },
+        "aiTokenTracker.inputCostPerMillion": {
+          "type": "number",
+          "default": 0,
+          "minimum": 0,
+          "description": "Input token cost per 1M tokens for your Codex model. Leave 0 to disable cost estimation."
+        },
+        "aiTokenTracker.cachedInputCostPerMillion": {
+          "type": "number",
+          "default": 0,
+          "minimum": 0,
+          "description": "Cached input token cost per 1M tokens for your Codex model. Leave 0 if unknown."
+        },
+        "aiTokenTracker.outputCostPerMillion": {
+          "type": "number",
+          "default": 0,
+          "minimum": 0,
+          "description": "Output token cost per 1M tokens for your Codex model. Leave 0 to disable cost estimation."
+        },
+        "aiTokenTracker.reasoningOutputCostPerMillion": {
+          "type": "number",
+          "default": 0,
+          "minimum": 0,
+          "description": "Reasoning output token cost per 1M tokens. Leave 0 to use the output token rate."
+        }
+      }
+    }
+  },
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": true
+    }
+  }
+}
